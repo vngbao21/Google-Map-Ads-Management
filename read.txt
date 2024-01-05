@@ -1,0 +1,4 @@
+lấy ảnh xài cloudinary
+npm install cloudinary
+
+npm i multer multer-storage-cloudinary
