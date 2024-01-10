@@ -1,0 +1,52 @@
+<h1>BẢNG BÁO CÁO</h1>
+
+<form action="/reports" id="addReport" method="POST" onsubmit="return validateRecaptcha()" enctype="multipart/form-data">
+
+    <div class="left-section">
+        
+        <div class="user-info-section">
+        <h2><i class="fas fa-user"></i> Thông tin người báo cáo</h2>
+        <label for="fullName">Họ tên người gửi báo cáo:</label>
+        <input type="text" id="fullName" name="fullName" placeholder="Võ Ngọc Gia Bảo" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="xxxx@xxx.xx" required>
+
+        <label for="phone">Điện thoại liên lạc:</label>
+        <input type="tel" id="phone" name="phone" placeholder="12345678" required>
+
+        <label for="reportContent">Nội dung báo cáo:</label>
+        <textarea  id="summernote" name="reportContent" rows="3" placeholder="Send message" required></textarea >
+
+        </div>
+    </div>
+
+    <div class="right-section" >
+        <div class="report-type-section">
+        <h2><i class="fas fa-flag"></i> Hình thức báo cáo</h2>
+        <label for="reportType">Hình thức báo cáo:</label>  
+        <select id="reportType" name="reportType">
+            <option value="Tố giác sai phạm">Tố giác sai phạm</option>
+            <option value="Đăng ký nội dung">Đăng ký nội dung</option>
+            <option value="Đóng góp ý kiến">Đóng góp ý kiến</option>
+            <option value="Giải đáp thắc mắc">Giải đáp thắc mắc</option>
+        </select>
+        </div>
+
+
+        <div  class="image-section">
+        <h2><i class="fas fa-image"></i> Hình ảnh minh hoạ</h2>
+        <label for="image1">Hình ảnh minh hoạ 1:</label>
+        <input type="file" id="image1" name="images" accept="image/*">
+
+        <label for="image2">Hình ảnh minh hoạ 2:</label>
+        <input type="file" id="image2" name="images" accept="image/*" multiple>
+
+        </div> 
+
+        <div class="g-recaptcha" data-sitekey="6LelokcpAAAAABZtoqD7JDbYLty18zOFcWOnJwel">
+        </div>
+        <br>
+        <button type="submit"><i class="fas fa-paper-plane"></i> Gửi yêu cầu</button>
+    </div>
+</form>

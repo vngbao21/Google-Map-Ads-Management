@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Phân hệ người dân</title>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkdyZlma94xlEhyGvEsx56ccQdcU9pJ2g&libraries=places&callback=initMap" async defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/markerclustererplus@2.1.4/dist/markerclusterer.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+        <link rel="stylesheet" href="/Dan/css/map.css">
+        <link rel="icon" href="/Dan/images/icon8.ico" type="image/x-icon">
+
+    </head>
+    <body>
+    
+        {{{body}}}
+        
+        <script src="/Dan/js/script.js" ></script>
+        <script>
+            var alertMsg = new URLSearchParams(window.location.search).get('alertOK');
+
+            // Hiển thị thông báo nếu có
+            if (alertMsg) {
+                alert(alertMsg);
+            }
+            var isVariableTrue = true;
+
+            function hideAndReloadMap() {
+                isVariableTrue = !isVariableTrue;
+                console.log(isVariableTrue);
+
+                // Ẩn/hiện tất cả các cluster
+                markerCluster.getClusters().forEach(function(cluster) {
+                    cluster.getMarkers().forEach(function(marker) {
+                        marker.setVisible(isVariableTrue);
+                    });
+                });
+            }
+            var hide = document.getElementById('hideQC').addEventListener('click', hideAndReloadMap);
+        </script>
+    
+    </body>
+</html>
