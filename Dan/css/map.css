@@ -23,7 +23,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: 18x;
   }
 
   #pac-input {
@@ -31,9 +31,22 @@
     padding: 10px;
     font-size: 15px;
     margin-top: 10px;
-    border: 1px solid #ccc;
+    border: 2px solid #ccc;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     width: 500px;
+    
+  }
+  form.BC {
+    position: absolute;
+    top: 20px;
+    right: 18px;
+    z-index: 2;
+    background-color: #fff; /* Màu nền trắng */
+    padding: 15px; /* Điều chỉnh lề nếu cần thiết */
+    border-radius: 10px; /* Bo tròn các góc nếu cần thiết */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    font-size: 15px;
+    border: 2px solid #ccc;
   }
 
   #hideQC {
@@ -48,7 +61,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: 18px;
   }
 
   button:hover {

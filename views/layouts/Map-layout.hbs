@@ -39,6 +39,36 @@
                 });
             }
             var hide = document.getElementById('hideQC').addEventListener('click', hideAndReloadMap);
+
+            document.getElementById('findBC').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+                const formData = new FormData(event.target);
+                const phoneNumber = formData.get('BC');
+
+                try {
+                    const response = await fetch('/findSDT', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ BC: phoneNumber }),
+                    });
+                    
+                    const clonedResponse = response.clone();
+                    const data = await clonedResponse.json();
+                    console.log('Parsed JSON Data:', data);
+
+                    if (data.success) {
+                        // Truyền biến data vào hàm displayReportList
+                        displayReportList(data.reportData);
+                    } else {
+                        console.error('Error:', data.message);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            });
         </script>
     
     </body>

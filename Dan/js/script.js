@@ -89,14 +89,10 @@ function initMap() {
   // Khởi tạo MarkerClusterer
   markerCluster = new MarkerClusterer(map, [], {
     imagePath: '/Dan/images/',
-    gridSize: 100,
-    maxZoom: 13
+    gridSize: 20,
+    maxZoom: 30
   });
 
-  showLocationText();
-  hideLocationText();
-  showQC();
-  hideQC();
 
   // // Thêm sự kiện zoom_changed để theo dõi thay đổi zoom
   // google.maps.event.addListener(map, 'zoom_changed', function() {
@@ -128,8 +124,8 @@ function initMap() {
             let quyhoach = location.quyhoach;
             const toadoX = location.toadoX;
             const toadoY = location.toadoY;
-            console.log('locationID');
-            console.log(locationID);
+            // console.log('locationID');
+            // console.log(locationID);
 
 
 
@@ -139,7 +135,7 @@ function initMap() {
               quyhoach = "CHƯA QUY HOẠCH";
             }
 
-            console.log(`locationID: ${locationID}, Name: ${name}, diachi: ${diachi}, phuongID: ${phuongID}, quanID: ${quanID}, loaivitri: ${loaivitri}, hinhanh: ${hinhanh1}, quyhoach: ${quyhoach}, toadoX: ${toadoX}, toadoY: ${toadoY}`);
+            // console.log(`locationID: ${locationID}, Name: ${name}, diachi: ${diachi}, phuongID: ${phuongID}, quanID: ${quanID}, loaivitri: ${loaivitri}, hinhanh: ${hinhanh1}, quyhoach: ${quyhoach}, toadoX: ${toadoX}, toadoY: ${toadoY}`);
 
             const billboardResponse = await fetch(`/billboards/${locationID}`);
             const billboardData = await billboardResponse.json();
@@ -220,6 +216,7 @@ function initMap() {
                     `;
 
                     small_small += report;
+                    console.log(report);
                     
                   });
 
@@ -406,6 +403,11 @@ function getPlaceDetails(placeId, formattedAddress) {
 function show(place, formattedAddress) {
   // Đặt vị trí của InfoWindow tại vị trí được click
   infor.setPosition(place.geometry.location);
+  var location = place.geometry.location;
+  var latitude = location.lat();
+  var longitude = location.lng();
+  console.log("Latitude: " + latitude);
+  console.log("Longitude: " + longitude);
 
   // Tính toán pixelOffset để đặt InfoWindow bên phải và lên phía trên vị trí được click
   var pixelOffsetX = 0; // Điều chỉnh giá trị này để thay đổi khoảng cách về bên phải
@@ -439,8 +441,10 @@ content += '</form>';
 // Kết thúc div address-info
 // Thêm nút "BÁO CÁO VI PHẠM" và căn chỉnh nó sang phía dưới bên phải
 content += '<form action="/locationAny" id="handlelocationAnyPost" method="POST"><div background-color: #bbdefb>' + 
-'<input type="hidden" name="nameAny" id="nameAny" value="' + formattedAddress + '">' +
-'<input type="hidden" name="diachiAny" id="diachiAny" value="' + place.name + '">' +
+'<input type="hidden" name="nameAny" id="nameAny" value="' + place.name  + '">' +
+'<input type="hidden" name="diachiAny" id="diachiAny" value="' + formattedAddress + '">' + 
+'<input type="hidden" name="toadoXAny" id="toadoXAny" value="' + latitude + '">' + 
+'<input type="hidden" name="toadoYAny" id="toadoYAny" value="' + longitude + '">' + 
 '<button type="submit" style="margin: 10px 10px 0px 400px; padding: 10px; align-self: flex-end; border: 2px solid #f00; left: -100px;"><i class="fas fa-exclamation-triangle" style="margin-right: 5px; color: #f00;"></i><b style="color: #f00;">BÁO CÁO VI PHẠM</b></button></div></form>';
 
 
@@ -475,6 +479,13 @@ function toggleReportList(date) {
     console.error('Element with id not found.');
   }
 }
+
+function toggleList() {
+  var resultElement = document.getElementById('result');
+  resultElement.style.display = (resultElement.style.display === 'none') ? 'block' : 'none';
+}
+
+
 
 // Mở trang Report.html trong một tab/chế độ xem mới và truyền tọa độ
 function redirectToReportPage() {
@@ -548,4 +559,134 @@ function updateClusterIcons(map, markerCluster) {
     }
   });
 }
+
+function displayReportList(reportData) {
+
+  const reportListElement = document.getElementById('reportList');
+  reportListElement.innerHTML = ''; // Clear previous results
+
+  if (reportData.length > 0) {
+    reportData.forEach(async report => {
+      const listItem = document.createElement('li');``
+
+      const propertiesToShow = ['reportType', 'fullName', 'email', 'phone', 'queryID', 'reportContent', 'thoidiemgui', 'tinhtrang', 'cachthucxuly', 'image1', 'image2'];
+
+      for (const key of propertiesToShow) {
+        if (report.hasOwnProperty(key)) {
+          const propertyItem = document.createElement('div');
+
+          // Chuyển đổi nhãn cho một số thuộc tính
+          let label = key;
+          if (key === 'reportType') {
+            label = 'Hình thức báo cáo';
+          }
+          if (key === 'fullName') {
+            label = 'Họ và tên';
+          }
+          if (key === 'phone') {
+            label = 'Số điện thoại';
+          }
+          if (key === 'email') {
+            label = 'Email';
+          }
+          if (key === 'reportContent') {
+            label = 'Nội dung báo cáo';
+          }
+          if (key === 'thoidiemgui') {
+            label = 'Thời điểm gửi';
+          }
+          if (key === 'tinhtrang') {
+            label = 'Tình trạng xử lí';
+          }
+          if (key === 'cachthucxuly') {
+            label = 'Cách thức xử lí';
+          }
+          if (key === 'queryID') {
+            var queryID = report[key];
+            if(!isNaN(queryID)){
+              const report = await fetch(`/getlocationAny/${queryID}`);
+              const DataArray = await report.json();
+              const Data = DataArray[0];
+              
+
+              const nameAny = Data.nameAny;
+              const diachiAny = Data.diachiAny;
+              const toadoXAny = Data.toadoXAny;
+              const toadoYAny = Data.toadoYAny;
+
+
+              label = 'Tên địa chỉ';
+              const propertyItem1 = document.createElement('div');
+              propertyItem1.textContent = `${label}: ${nameAny}`;
+              listItem.appendChild(propertyItem1);
+
+              label = 'Địa chỉ';
+              const propertyItem2 = document.createElement('div');
+              propertyItem2.textContent = `${label}: ${diachiAny}`;
+              listItem.appendChild(propertyItem2);
+
+              label = 'Tọa độ x';
+              const propertyItem3 = document.createElement('div');
+              propertyItem3.textContent = `${label}: ${toadoXAny}`;
+              listItem.appendChild(propertyItem3);
+
+              label = 'Tọa độ y';
+              const propertyItem4 = document.createElement('div');
+              propertyItem4.textContent = `${label}: ${toadoYAny}`;
+              listItem.appendChild(propertyItem4);
+            }
+            else{
+              const report = await fetch(`/getlocation/${queryID}`);
+              const DataArray = await report.json();
+              const Data = DataArray[0];
+
+              
+              const name = Data.name;
+              const diachi = Data.diachi;
+              const toadoX = Data.toadoX;
+              const toadoY = Data.toadoY;
+
+              label = 'Tên địa chỉ';
+              const propertyItem1 = document.createElement('div');
+              propertyItem1.textContent = `${label}: ${name}`;
+              listItem.appendChild(propertyItem1);
+
+              label = 'Địa chỉ';
+              const propertyItem2 = document.createElement('div');
+              propertyItem2.textContent = `${label}: ${diachi}`;
+              listItem.appendChild(propertyItem2);
+
+              label = 'Tọa độ x';
+              const propertyItem3 = document.createElement('div');
+              propertyItem3.textContent = `${label}: ${toadoX}`;
+              listItem.appendChild(propertyItem3);
+
+              label = 'Tọa độ y';
+              const propertyItem4 = document.createElement('div');
+              propertyItem4.textContent = `${label}: ${toadoY}`;
+              listItem.appendChild(propertyItem4);
+            }
+            continue;
+          }
+          if (key === 'image1') {
+            label = 'Ảnh 1';
+          }
+          if (key === 'image2') {
+            label = 'Ảnh 2';
+          }
+
+          propertyItem.textContent = `${label}: ${report[key]}`;
+          listItem.appendChild(propertyItem);
+        }
+      }
+
+      reportListElement.appendChild(listItem);
+    });
+  } else {
+    const listItem = document.createElement('li');
+    listItem.textContent = 'Không tìm thấy kết quả.';
+    reportListElement.appendChild(listItem);
+  }
+}
+
 

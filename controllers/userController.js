@@ -1,7 +1,7 @@
 const Report = require('../models/report');
 const Billboard = require('../models/billboard');
 const Location = require('../models/location');
-const LocatioAny = require('../models/locationAny');
+const LocationAny = require('../models/locationAny');
 
 const cloudinary = require("../cloudImage/cloudinary");
 const axios = require('axios');
@@ -108,14 +108,40 @@ controller.handlelocationAnyPost = async (req, res) => {
         const nameAny = req.body.nameAny; 
         const diachiAny = req.body.diachiAny; 
         const locationAnyID = await findMaxNumericQueryID();
+        const toadoXAny = req.body.toadoXAny; 
+        const toadoYAny = req.body.toadoYAny; 
 
-        await LocatioAny.create({
+
+        await LocationAny.create({
             locationAnyID,
             nameAny,
             diachiAny,
+            toadoXAny,
+            toadoYAny
         });
 
         res.redirect('/report');
+    } catch (error) {
+        console.error('Error handling:', error);
+        res.status(400).json({ success: false, message: 'Error handling', error: error.message });
+    }
+};
+
+controller.findBC = async (req, res) => {
+    try {
+        console.log(req.body);
+        const phone = req.body.BC; 
+
+        const reportData = await Report.find({ phone });
+
+
+        if (!reportData || reportData.length === 0) {
+            res.status(404).json({ success: false, message: 'Không tìm thấy dữ liệu.' });
+            return;
+        }
+
+        // Trả về dữ liệu
+        res.json({ success: true, reportData });
     } catch (error) {
         console.error('Error handling:', error);
         res.status(400).json({ success: false, message: 'Error handling', error: error.message });
@@ -229,6 +255,43 @@ controller.getBillboards = async (req, res) => {
 
 
         res.json(billboardData);
+    } catch (error) {
+        console.error('Lỗi khi lấy dữ liệu:', error);
+        res.status(500).send('Lỗi Nội Bộ của Máy Chủ');
+    }
+};
+
+controller.getLocation = async (req, res) => {
+    try {
+        const billboardID = req.params.queryID;
+
+        const DataArray = await Billboard.find({ billboardID });
+
+        if (Array.isArray(DataArray) && DataArray.length > 0) {
+            const Data = DataArray[0];
+            const locationID = Data.locationID;
+            const locationArray = await Location.find({ locationID });
+            res.json(locationArray);
+        }
+        else{
+            res.status(500).send('Lỗi Nội Bộ của Máy Chủ');
+        }
+
+
+    } catch (error) {
+        console.error('Lỗi khi lấy dữ liệu:', error);
+        res.status(500).send('Lỗi Nội Bộ của Máy Chủ');
+    }
+};
+
+controller.getLocationAny = async (req, res) => {
+    try {
+        const locationAnyID = req.params.queryID;
+
+        const Data = await LocationAny.find({ locationAnyID });
+
+
+        res.json(Data);
     } catch (error) {
         console.error('Lỗi khi lấy dữ liệu:', error);
         res.status(500).send('Lỗi Nội Bộ của Máy Chủ');
