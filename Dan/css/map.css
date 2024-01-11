@@ -47,6 +47,8 @@
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     font-size: 15px;
     border: 2px solid #ccc;
+    max-height: 700px; 
+    overflow-y: auto;
   }
 
   #hideQC {

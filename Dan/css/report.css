@@ -54,7 +54,7 @@
   }
 
   button {
-    background-color: #4CAF50;
+    background-color: #e2f0cb;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -66,7 +66,7 @@
   }
 
   button:hover {
-      background-color: #558257; /* Màu nền khi hover */
+      background-color: #4CAF50; /* Màu nền khi hover */
   }
 
   .report-type-section, .user-info-section, .image-section {
