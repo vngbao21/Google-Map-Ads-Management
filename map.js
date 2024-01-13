@@ -11,7 +11,7 @@ const PORT = 1000;
 
 var userRoute = require('./routes/userRoute');
 
-const MONGO_URL = 'mongodb+srv://nhom10:web21ktpm@cluster0.uveminn.mongodb.net/nhom10?retryWrites=true&w=majority'
+const MONGO_URL = 'mongodb://localhost:27017/nhom10'; // Đổi 'ten_database' thành tên bạn muốn
 
 const options = {
   useNewUrlParser: true,

@@ -1,10 +1,24 @@
-lấy ảnh xài cloudinary
+Tải các môi trường:
+npm init -y
+
+npm install
+
+npm install express
+
+Cài Đặt Thư Viện mongodb
+npm install mongodb
+
+npm install mongoose
+
+Trong file map.js 
+const MONGO_URL = 'mongodb+srv://nhom10:web21ktpm@cluster0.uveminn.mongodb.net/nhom10?retryWrites=true&w=majority'
+
+Lấy ảnh xài cloudinary
 npm install cloudinary
 
 npm i multer multer-storage-cloudinary
 
-
-grecaptcha
+Grecaptcha
 npm install axios
 
 

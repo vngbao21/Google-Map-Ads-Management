@@ -175,7 +175,7 @@ controller.addReport = async (req, res) => {
         //return res.json({success: false, msg: 'Captcha token is underfined!'});
     }
     else{
-        const YOUR_SECRET_KEY = '6LelokcpAAAAAFKFE7EuwzzYtQi9vYtT77Vogx7l';
+        const YOUR_SECRET_KEY = ''; // lấy của captcha
         const verificationURL = `https://www.google.com/recaptcha/api/siteverify?secret=${YOUR_SECRET_KEY}&response=${recaptcha}`;
         
         try {
